@@ -5,7 +5,7 @@ ems_type: "doc"
 ems_scope: "simulation"
 ems_description: "Overview of simulation and test harness subsystems in R-EMS."
 ems_version: "v0.1.0"
-ems_owner: "Ocean Batteries / R-EMS Maintainers"
+ems_owner: "tbd"
 ---
 
 # Simulation & Telemetry Subsystem
