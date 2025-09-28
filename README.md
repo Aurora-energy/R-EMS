@@ -5,7 +5,7 @@ ems_type: "doc"
 ems_scope: "meta"
 ems_description: "Top-level README for R-EMS repository."
 ems_version: "v0.0.0-prealpha"
-ems_owner: "Ocean Batteries / R-EMS Maintainers"
+ems_owner: "tbd"
 ---
 
 # R-EMS — Rust-based Energy Management System
