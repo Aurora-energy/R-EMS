@@ -1,0 +1,18 @@
+<!--
+---
+ems_section: "12-gui-setup-wizard"
+ems_subsection: "icon"
+ems_type: "asset"
+ems_scope: "ui"
+ems_description: "SVG icon for load."
+ems_version: "v0.0.0-prealpha"
+ems_owner: "tbd"
+---
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <g fill="none" stroke="#455a64" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 48h32" />
+    <path d="M24 48V24a8 8 0 0 1 16 0v24" fill="#cfd8dc" />
+    <rect x="20" y="16" width="24" height="8" rx="4" ry="4" fill="#eceff1" stroke="#455a64" />
+  </g>
+</svg>

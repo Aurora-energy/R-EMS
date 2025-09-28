@@ -1,0 +1,22 @@
+# ---
+# ems_section: "02-messaging-ipc-data-model"
+# ems_subsection: "manifest"
+# ems_type: "config"
+# ems_scope: "build"
+# ems_description: "Cargo manifest for messaging transport crate."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "tbd"
+# ---
+[package]
+name = "r-ems-transport"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+tokio = { workspace = true, features = ["sync"] }
+tracing = { workspace = true }
+thiserror = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+r-ems-messaging = { path = "../r-ems-messaging" }

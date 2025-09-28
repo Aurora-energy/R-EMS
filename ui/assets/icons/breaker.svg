@@ -1,0 +1,19 @@
+<!--
+---
+ems_section: "12-gui-setup-wizard"
+ems_subsection: "icon"
+ems_type: "asset"
+ems_scope: "ui"
+ems_description: "SVG icon for breaker."
+ems_version: "v0.0.0-prealpha"
+ems_owner: "tbd"
+---
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <g fill="none" stroke="#c62828" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="20" y="12" width="24" height="40" rx="6" ry="6" fill="#ffcdd2" />
+    <path d="M24 32h16" />
+    <path d="M32 20v12" />
+    <circle cx="32" cy="44" r="4" fill="#b71c1c" />
+  </g>
+</svg>

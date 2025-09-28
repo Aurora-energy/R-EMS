@@ -1,0 +1,24 @@
+# ---
+# ems_section: "03-persistence-logging"
+# ems_subsection: "manifest"
+# ems_type: "config"
+# ems_scope: "build"
+# ems_description: "Cargo manifest for metrics export crate."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "tbd"
+# ---
+[package]
+name = "r-ems-metrics"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Prometheus metrics instrumentation and HTTP endpoint utilities for R-EMS components."
+
+[dependencies]
+anyhow.workspace = true
+axum.workspace = true
+prometheus.workspace = true
+tokio.workspace = true
+tracing.workspace = true

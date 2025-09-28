@@ -1,0 +1,86 @@
+# ---
+# ems_section: "13-documentation-contributor-guides"
+# ems_subsection: "workflow-docs"
+# ems_type: "config"
+# ems_scope: "automation"
+# ems_description: "Documentation validation workflow."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "Ocean Batteries / R-EMS Maintainers"
+# ---
+name: Docs Quality
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docs.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate frontmatter
+        run: |
+          python - <<'PY'
+import pathlib
+import sys
+
+root = pathlib.Path('docs')
+required_keys = {
+    'ems_section',
+    'ems_subsection',
+    'ems_type',
+    'ems_scope',
+    'ems_description',
+    'ems_version',
+    'ems_owner',
+}
+errors = []
+for path in sorted(root.rglob('*.md')):
+    rel = path.relative_to(pathlib.Path('.'))
+    text = path.read_text(encoding='utf-8')
+    if not text.startswith('---'):
+        errors.append(f"{rel}: missing frontmatter start delimiter")
+        continue
+    parts = text.split('\n---\n', 1)
+    if len(parts) != 2:
+        errors.append(f"{rel}: malformed frontmatter delimiters")
+        continue
+    frontmatter_raw = parts[0].split('\n', 1)[1] if '\n' in parts[0] else ''
+    meta = {}
+    for line in frontmatter_raw.splitlines():
+        if not line.strip():
+            continue
+        if ':' not in line:
+            errors.append(f"{rel}: invalid frontmatter line '{line}'")
+            continue
+        key, value = line.split(':', 1)
+        meta[key.strip()] = value.strip().strip('"')
+    has_namespace = any(k.startswith('ems_') for k in meta)
+    if has_namespace:
+        missing = [key for key in required_keys if key not in meta]
+        if missing:
+            errors.append(f"{rel}: missing keys {missing}")
+    if str(meta.get('ems_section', '')).startswith('13-docs'):
+        body = parts[1]
+        if 'VERSIONING.md' not in body:
+            errors.append(f"{rel}: documentation in 13-docs must reference VERSIONING.md")
+if errors:
+    print('\n'.join(errors))
+    sys.exit(1)
+PY
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: --offline docs

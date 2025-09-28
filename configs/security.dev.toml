@@ -1,0 +1,20 @@
+# ---
+# ems_section: "06-security"
+# ems_subsection: "04-crypto"
+# ems_type: "config"
+# ems_scope: "core"
+# ems_description: "Development security configuration (self-signed TLS, relaxed compliance)."
+# ems_version: "v0.1.0"
+# ems_owner: "tbd"
+# reference: docs/VERSIONING.md
+# ---
+
+[tls]
+allow_self_signed = true
+
+[compliance]
+mode = "relaxed"
+
+[identity]
+default_admin_username = "admin"
+

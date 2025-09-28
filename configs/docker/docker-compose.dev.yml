@@ -1,0 +1,30 @@
+# ---
+# ems_section: "11-simulation-test-harness"
+# ems_subsection: "compose-dev"
+# ems_type: "config"
+# ems_scope: "infrastructure"
+# ems_description: "Simulation-focused docker-compose stack for local experiments."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "tbd"
+# ---
+version: "3.9"
+
+services:
+  r-emsd:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: r-emsd-dev
+    restart: unless-stopped
+    environment:
+      R_EMS_CONFIG_PATH: /workspace/configs/example.dev.toml
+      R_EMS_LICENSE_BYPASS: 1
+      R_EMS_LOG: debug
+      R_EMS_MODE: simulation
+    working_dir: /workspace
+    volumes:
+      - ..:/workspace:delegated
+    ports:
+      - "9898:9898"
+      - "8080:8080"
+    command: ["run"]

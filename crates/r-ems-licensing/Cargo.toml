@@ -1,0 +1,31 @@
+# ---
+# ems_section: "14-versioning-licensing-system"
+# ems_subsection: "manifest"
+# ems_type: "config"
+# ems_scope: "build"
+# ems_description: "Cargo manifest for licensing governance crate."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "tbd"
+# ---
+[package]
+name = "r-ems-licensing"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Licensing and entitlement management utilities for R-EMS."
+publish = false
+
+[dependencies]
+anyhow.workspace = true
+base64.workspace = true
+chrono.workspace = true
+once_cell.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_with.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+prometheus.workspace = true
+ed25519-dalek = { version = "2.1", default-features = false, features = ["std"] }

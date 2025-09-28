@@ -1,0 +1,43 @@
+# ---
+# ems_section: "06-security-access-control"
+# ems_subsection: "manifest"
+# ems_type: "config"
+# ems_scope: "build"
+# ems_description: "Cargo manifest for security policy crate."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "tbd"
+# ---
+[package]
+name = "r-ems-security"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Security, identity, RBAC, and compliance helpers for the R-EMS platform."
+publish = false
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+chrono = { workspace = true }
+sha2 = { workspace = true }
+rand = { workspace = true }
+rand_core = { version = "0.6" }
+hex = { workspace = true }
+parking_lot = { workspace = true }
+tracing = { workspace = true }
+prometheus = { workspace = true }
+base64 = { workspace = true }
+ring = { version = "0.17" }
+rcgen = "0.12"
+serde_with = { workspace = true, features = ["chrono"] }
+bincode = "1"
+uuid = { version = "1", features = ["v4"] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time"] }
+serde_json = { workspace = true }
+tempfile = "3"

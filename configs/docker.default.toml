@@ -1,0 +1,44 @@
+﻿mode = "simulation"
+
+[logging]
+directory = "/data/logs"
+format = "structured-json"
+file_prefix = "r-emsd"
+
+[license]
+path = "/opt/r-ems/license/dev.lic"
+allow_bypass = true
+
+[update]
+feed_path = "/opt/r-ems/configs/update_feed.json"
+allow_apply_in_dev = true
+poll_interval = 900
+
+[simulation]
+enable_randomized_inputs = true
+random_seed = 4242
+scenario_files = ["/opt/r-ems/configs/scenarios/docker_sine.json"]
+replay_speedup = 2.0
+
+[grids.docker-grid]
+description = "Automated container simulator grid"
+
+[grids.docker-grid.snapshot]
+directory = "/data/snapshots/docker-grid"
+retain_last = 12
+auto_replay = true
+interval = 30
+
+[grids.docker-grid.controllers.primary]
+role = "primary"
+heartbeat_interval = 1
+watchdog_timeout = 3
+failover_order = 0
+sensor_inputs = ["synthetic://voltage", "synthetic://frequency"]
+
+[grids.docker-grid.controllers.secondary]
+role = "secondary"
+heartbeat_interval = 1
+watchdog_timeout = 3
+failover_order = 1
+sensor_inputs = ["synthetic://voltage", "synthetic://frequency"]

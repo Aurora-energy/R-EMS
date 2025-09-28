@@ -1,0 +1,40 @@
+# ---
+# ems_section: "07-resilience-fault-tolerance"
+# ems_subsection: "manifest"
+# ems_type: "config"
+# ems_scope: "build"
+# ems_description: "Cargo manifest for resilience utilities crate."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "tbd"
+# ---
+[package]
+name = "r-ems-resilience"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Resilience, chaos injection, and degradation tooling for R-EMS."
+publish = false
+
+[dependencies]
+anyhow = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+toml = { workspace = true }
+chrono = { workspace = true }
+rand = { workspace = true }
+rand_distr = { workspace = true }
+parking_lot = { workspace = true }
+tracing = { workspace = true }
+tokio = { workspace = true, features = ["time", "macros", "rt-multi-thread", "sync"] }
+prometheus = { workspace = true }
+indexmap = { workspace = true }
+r-ems-redundancy = { path = "../r-ems-redundancy" }
+r-ems-metrics = { path = "../r-ems-metrics" }
+r-ems-common = { path = "../r-ems-common" }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["time", "macros", "rt-multi-thread", "sync"] }
+tempfile = "3"
+serde_json = { workspace = true }

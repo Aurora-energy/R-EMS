@@ -1,0 +1,4 @@
+grid_id,controller_id,timestamp,voltage_v,frequency_hz,load_kw,scenario_label
+grid-a,primary,2024-01-01T00:00:00Z,229.8,49.97,40.5,startup
+grid-a,primary,2024-01-01T00:00:01Z,230.4,50.01,42.1,ramp
+grid-a,secondary,2024-01-01T00:00:02Z,231.1,50.05,38.9,standby
