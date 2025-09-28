@@ -1,0 +1,33 @@
+# ---
+# ems_section: "05-networking-external-interfaces"
+# ems_subsection: "manifest"
+# ems_type: "config"
+# ems_scope: "build"
+# ems_description: "Cargo manifest for the R-EMS control CLI."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "tbd"
+# ---
+[package]
+name = "r-emsctl"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Administrative CLI for R-EMS installations (setup, config management)."
+
+[dependencies]
+anyhow.workspace = true
+clap = { workspace = true, features = ["derive"] }
+indexmap.workspace = true
+r-ems-common = { path = "../../crates/r-ems-common" }
+r-ems-config = { path = "../../crates/r-ems-config" }
+r-ems-logging = { path = "../../crates/r-ems-logging" }
+r-ems-versioning = { path = "../../crates/r-ems-versioning" }
+serde.workspace = true
+serde_json.workspace = true
+serde_yaml.workspace = true
+tokio = { workspace = true, features = ["rt-multi-thread"] }
+
+[dev-dependencies]
+assert_cmd = "2"

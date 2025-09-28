@@ -1,0 +1,68 @@
+﻿mode = "simulation"
+
+[logging]
+directory = "target/dev-logs"
+format = "pretty"
+file_prefix = "rems-dev"
+
+[license]
+path = "configs/dev.license"
+allow_bypass = true
+
+[update]
+feed_path = "configs/update_feed.json"
+allow_apply_in_dev = true
+poll_interval = 600
+
+[simulation]
+enable_randomized_inputs = true
+random_seed = 1337
+scenario_files = ["configs/scenarios/dev_sine.json"]
+replay_speedup = 2.0
+\n
+[grids.grid-a]
+description = "Development grid feeding lab benches"
+
+[grids.grid-a.snapshot]
+directory = "target/snapshots/grid-a"
+retain_last = 10
+auto_replay = true
+interval = 15
+
+[grids.grid-a.controllers.primary]
+role = "primary"
+heartbeat_interval = 1
+watchdog_timeout = 3
+failover_order = 0
+sensor_inputs = ["synthetic://voltage", "synthetic://frequency"]
+
+[grids.grid-a.controllers.secondary]
+role = "secondary"
+heartbeat_interval = 1
+watchdog_timeout = 3
+failover_order = 1
+sensor_inputs = ["synthetic://voltage", "synthetic://frequency"]
+
+[grids.grid-b]
+description = "Backup generator island"
+
+[grids.grid-b.snapshot]
+directory = "target/snapshots/grid-b"
+retain_last = 5
+auto_replay = false
+interval = 30
+
+[grids.grid-b.controllers.primary]
+role = "primary"
+heartbeat_interval = 2
+watchdog_timeout = 5
+failover_order = 0
+sensor_inputs = ["synthetic://generator/load", "synthetic://generator/frequency"]
+
+[grids.grid-b.controllers.observer]
+role = "observer"
+heartbeat_interval = 5
+watchdog_timeout = 10
+failover_order = 9
+sensor_inputs = ["synthetic://generator/frequency"]
+

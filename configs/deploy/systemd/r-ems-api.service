@@ -1,0 +1,28 @@
+# ---
+# ems_section: "10-deployment-ci-cd-enhancements"
+# ems_subsection: "systemd-api"
+# ems_type: "config"
+# ems_scope: "operations"
+# ems_description: "Systemd unit for the R-EMS API surface."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "tbd"
+# ---
+[Unit]
+Description=R-EMS API Gateway
+Requires=r-emsd.service
+After=r-emsd.service
+
+[Service]
+Type=simple
+User=rems
+Group=rems
+EnvironmentFile=-/etc/r-ems/r-ems-api.env
+ExecStart=/usr/local/bin/r-emsd --config ${R_EMS_API_CONFIG:-/etc/r-ems/api.toml}
+WorkingDirectory=/var/lib/r-ems
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

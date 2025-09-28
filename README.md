@@ -69,11 +69,30 @@ cargo test
     ```
     
 - **Control CLI:**
-    
+
+    ```bash
+    ./bin/r-emsctl setup wizard
+    ```
+
+    Interactive first-run workflow that persists a validated configuration
+    manifest and assigns controller failover roles.
+
     ```bash
     ./bin/r-emsctl status
     ```
-    
+
+---
+
+## 📊 Observability (Logging & Metrics)
+
+- **Logging**
+  - Structured JSON logs are emitted to stdout by default so container platforms can parse them easily.
+  - Daily rotated log files live under the configured `logging.directory` to support long running production analysis.
+  - Override verbosity with `R-EMS_LOG=<filter>` (falls back to `RUST_LOG` or defaults to `debug`).
+
+- **Metrics**
+  - Enable the Prometheus exporter in `configs/*.toml` under `[metrics]`.
+  - Scrape the `/metrics` endpoint to collect counters and histograms for daemon lifecycle and orchestrator health.
 
 ---
 
@@ -93,14 +112,21 @@ cargo test
 - Access via web browser after starting R-EMS.
     
 - Guides you through first-time installation:
-    
+
     - Define installation name.
-        
+
     - Configure grids and controllers.
-        
+
     - Enable simulation or production mode.
-        
+
     - Save validated configuration.
+
+- The same manifest is editable later via the CLI (`r-emsctl setup new`)
+  or by re-running the wizard. Configuration is persisted under
+  `/etc/r-ems` (override with `R_EMS_CONFIG_ROOT`), allowing both the CLI
+  and GUI to operate on the same source of truth.
+- Wizard actions emit structured success/fault logs via the shared
+  logging facade for traceability.
         
 
 ---
@@ -114,6 +140,11 @@ Install via helper script:
 ```
 
 Supports Docker, systemd, and bare-metal deployments.
+
+- The Docker helper (`scripts/docker-install.sh`) bundles the runtime
+  image with the required services (OpenBalena supervisor, SurrealDB, and
+  the static setup wizard assets) so a fresh install has all core
+  dependencies available out of the box.
 
 ---
 

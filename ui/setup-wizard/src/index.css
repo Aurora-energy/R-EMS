@@ -1,0 +1,20 @@
+/*
+---
+ems_section: "12-gui"
+ems_subsection: "01-bootstrap"
+ems_type: "style"
+ems_scope: "gui"
+ems_description: "Global stylesheet bootstrapping TailwindCSS layers for the setup wizard."
+ems_version: "v0.1.0"
+ems_owner: "tbd"
+ems_references:
+  - /docs/VERSIONING.md
+---
+*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}

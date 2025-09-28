@@ -1,0 +1,38 @@
+# ---
+# ems_section: "10-deployment-ci-cd-enhancements"
+# ems_subsection: "compose-runtime"
+# ems_type: "config"
+# ems_scope: "infrastructure"
+# ems_description: "Runtime docker-compose stack for packaged services."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "tbd"
+# ---
+version: "3.9"
+
+services:
+  r-emsd:
+    image: ${R_EMS_IMAGE:-r-emsd:local}
+    container_name: ${R_EMS_CONTAINER:-r-emsd}
+    restart: unless-stopped
+    environment:
+      R_EMS_CONFIG_PATH: /data/config/config.toml
+      R_EMS_LICENSE_BYPASS: ${R_EMS_LICENSE_BYPASS:-1}
+      R_EMS_LOG: ${R_EMS_LOG_LEVEL:-info}
+      R_EMS_MODE: ${R_EMS_MODE:-}
+    volumes:
+      - ${R_EMS_CONFIG_DIR:-/var/lib/r-ems/config}:/data/config
+      - ${R_EMS_LOG_DIR:-/var/lib/r-ems/logs}:/data/logs
+      - ${R_EMS_SNAPSHOT_DIR:-/var/lib/r-ems/snapshots}:/data/snapshots
+    ports:
+      - "${R_EMS_METRICS_PORT:-9898}:9898"
+      - "${R_EMS_API_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/status"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"

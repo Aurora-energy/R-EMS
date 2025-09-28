@@ -1,0 +1,86 @@
+# ---
+# ems_section: "10-deployment-ci-cd-enhancements"
+# ems_subsection: "workflow-release"
+# ems_type: "config"
+# ems_scope: "automation"
+# ems_description: "Release pipeline for packaging artefacts."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "Ocean Batteries / R-EMS Maintainers"
+# ---
+name: deployment-release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      TARGETS: "x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu armv7-unknown-linux-gnueabihf"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Extract release notes
+        id: changelog
+        shell: bash
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          version_section=$(awk "/^## \[${tag//\//\/}\]/{flag=1;next}/^## /{if(flag)exit}flag" CHANGELOG.md)
+          if [[ -z "${version_section}" ]]; then
+            echo "::error::Could not find changelog entry for ${tag}" >&2
+            exit 1
+          fi
+          printf '%s\n' "${version_section}" > release-notes.md
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          targets: ${{ env.TARGETS }}
+      - name: Build release binaries
+        run: |
+          set -eux
+          mkdir -p artifacts
+          for target in $TARGETS; do
+            rustup target add "$target"
+            cargo build --release --bin r-emsd --target "$target"
+            tar czf artifacts/r-emsd-${target}.tar.gz -C target/${target}/release r-emsd
+          done
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: r-ems-release-${{ steps.changelog.outputs.tag }}
+          path: artifacts/*.tar.gz
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push container image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: deploy/Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ steps.changelog.outputs.tag }}
+            ghcr.io/${{ github.repository }}:latest
+          build-args: |
+            APP_VERSION=${{ steps.changelog.outputs.tag }}
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.changelog.outputs.tag }}
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          body_path: release-notes.md
+          files: artifacts/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

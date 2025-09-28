@@ -1,0 +1,29 @@
+# ---
+# ems_section: "11-simulation"
+# ems_subsection: "01-bootstrap"
+# ems_type: "config"
+# ems_scope: "build"
+# ems_description: "Cargo manifest for the Simulation test harness crate."
+# ems_version: "v0.1.0"
+# ems_owner: "tbd"
+# ---
+# Refer to /docs/VERSIONING.md for workspace release coordination details.
+[package]
+name = "r-ems-testharness"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Automated Simulation & Test Harness orchestration tooling."
+readme = "../../README.md"
+
+[lib]
+name = "r_ems_testharness"
+path = "src/lib.rs"
+
+[dependencies]
+anyhow.workspace = true
+serde.workspace = true
+serde_yaml.workspace = true
+tracing.workspace = true

@@ -1,0 +1,44 @@
+# ---
+# ems_section: "01-core-functionality"
+# ems_subsection: "manifest"
+# ems_type: "config"
+# ems_scope: "build"
+# ems_description: "Cargo manifest for the R-EMS daemon binary crate."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "tbd"
+# ---
+[package]
+name = "r-emsd"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "R-EMS daemon entrypoint providing CLI, orchestration startup, and lifecycle management."
+readme = "../../README.md"
+
+[dependencies]
+r-ems-common = { path = "../../crates/r-ems-common" }
+r-ems-config = { path = "../../crates/r-ems-config" }
+r-ems-core = { path = "../../crates/r-ems-core" }
+r-ems-metrics = { path = "../../crates/r-ems-metrics" }
+r-ems-api = { path = "../../crates/r-ems-api" }
+r-ems-redundancy = { path = "../../crates/r-ems-redundancy" }
+r-ems-sim = { path = "../../crates/r-ems-sim" }
+r-ems-rt = { path = "../../crates/r-ems-rt" }
+anyhow.workspace = true
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_yaml.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+tokio.workspace = true
+futures.workspace = true
+parking_lot.workspace = true
+indexmap.workspace = true
+reqwest.workspace = true
+octocrab.workspace = true
+
+[build-dependencies]
+vergen.workspace = true

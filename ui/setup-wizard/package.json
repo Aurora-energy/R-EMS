@@ -1,0 +1,35 @@
+{
+  "__frontmatter__": {
+    "ems_section": "12-gui",
+    "ems_subsection": "01-bootstrap",
+    "ems_type": "config",
+    "ems_scope": "gui",
+    "ems_description": "Package manifest for the setup wizard React frontend.",
+    "ems_version": "v0.1.0",
+    "ems_owner": "tbd",
+    "ems_references": ["/docs/VERSIONING.md"]
+  },
+  "name": "r-ems-setup-wizard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.2",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.0"
+  }
+}

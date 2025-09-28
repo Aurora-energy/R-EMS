@@ -1,0 +1,20 @@
+<!--
+---
+ems_section: "12-gui-setup-wizard"
+ems_subsection: "icon"
+ems_type: "asset"
+ems_scope: "ui"
+ems_description: "SVG icon for inverter."
+ems_version: "v0.0.0-prealpha"
+ems_owner: "tbd"
+---
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <g fill="none" stroke="#00897b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="12" y="10" width="40" height="44" rx="6" ry="6" fill="#b2dfdb" />
+    <path d="M22 24h20" />
+    <path d="M22 32h20" />
+    <path d="M22 40h20" />
+    <circle cx="32" cy="48" r="4" fill="#004d40" />
+  </g>
+</svg>

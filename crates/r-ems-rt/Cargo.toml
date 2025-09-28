@@ -1,0 +1,35 @@
+# ---
+# ems_section: "01-core-functionality"
+# ems_subsection: "manifest"
+# ems_type: "config"
+# ems_scope: "build"
+# ems_description: "Cargo manifest for runtime helpers crate."
+# ems_version: "v0.0.0-prealpha"
+# ems_owner: "tbd"
+# ---
+[package]
+name = "r-ems-rt"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Real-time and deterministic scheduling utilities for R-EMS."
+readme = "../../README.md"
+
+[lib]
+name = "r_ems_rt"
+path = "src/lib.rs"
+
+[features]
+default = []
+
+[dependencies]
+r-ems-common = { path = "../r-ems-common" }
+anyhow.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+tokio.workspace = true
+chrono.workspace = true
+parking_lot.workspace = true
+statrs.workspace = true
