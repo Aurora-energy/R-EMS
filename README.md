@@ -1,112 +1,157 @@
-Status Very early alpha stage no official release yet
+---
+ems_section: "00-meta"
+ems_subsection: "readme"
+ems_type: "doc"
+ems_scope: "meta"
+ems_description: "Top-level README for R-EMS repository."
+ems_version: "v0.0.0-prealpha"
+ems_owner: "Ocean Batteries / R-EMS Maintainers"
+---
 
-# R-EMS Orchestrator
+# R-EMS — Rust-based Energy Management System
 
-R-EMS is a redundant energy management system designed for industrial and edge deployments. This repository hosts the Rust workspace that powers the core runtime, redundancy supervisor, simulation engine, and Balena-ready CLI daemon (`r-emsd`).
+⚠️ **Status: This project is NOT in release yet — it is pre-alpha, not stable.**  
+Development is ongoing. Interfaces, APIs, structure and features will change.
 
-## Features
-- Multi-grid orchestration with deterministic scheduling and heartbeat-driven health monitoring
-- Controller redundancy with promotion, watchdog timers, and snapshot-based replay
-- License validation with verifiable payloads (base64 + HMAC) and developer bypass controls
-- Semantic versioning with Git commit embedding via `vergen`
-- Update subsystem supporting local feeds and GitHub Releases via `octocrab`
-- Simulator mode for synthetic or replayed telemetry, including hybrid hardware/sim blending
-- Structured logging (`tracing`) with production and developer profiles
+---
 
-## Workspace Layout
-```
-Cargo.toml              # workspace definition
-bin/r-emsd/             # CLI daemon entrypoint
-crates/r-ems-common/    # shared types, config, licensing, logging
-crates/r-ems-core/      # orchestrator runtime, snapshots, updates
-crates/r-ems-redundancy/# heartbeat + failover supervisor
-crates/r-ems-sim/       # synthetic telemetry + scenario replay engines
-crates/r-ems-rt/        # real-time helpers (rate limiter, deterministic executor)
-configs/                # example TOML configs + update feed + scenarios
-.github/workflows/      # CI + release pipelines
-```
+## 📖 Project Purpose
+R-EMS is an **energy management system written in Rust**.  
+It is designed for high-reliability, redundant multi-grid environments, including:  
+- Land-based battery installations.  
+- Marine systems with parallel grids and controllers.  
+- Simulation/testing with replay and synthetic data.  
 
-## Quick Start
-1. Ensure Rust 1.82+ and Cargo are installed.
-2. Clone the repo and enter the workspace.
-3. Choose a configuration (`configs/example.dev.toml`, `configs/example.prod.toml`, or `configs/rpi_sim.toml`).
-4. Run the daemon:
-   ```bash
-   cargo run -p r-emsd -- --config configs/example.dev.toml run
-   ```
-5. Trigger simulator output:
-   ```bash
-   cargo run -p r-emsd -- --mode simulation --config configs/example.dev.toml run
-   ```
-6. Check for updates:
-   ```bash
-   cargo run -p r-emsd -- update-check
-   ```
+The architecture emphasizes **resilience, security, observability, and modularity**, with clear boundaries between core, messaging, persistence, orchestration, networking, and simulation.
 
-## Versioning & Build Metadata
-- Semantic version set in `Cargo.toml`
-- `vergen` build script embeds Git SHA, target triple, profile, and timestamp
-- `r-emsd --version` prints `SEMVER (GIT_SHA)`
+This project exists to break down the barriers created by proprietary EMS systems, which often make troubleshooting in the field nearly impossible and slow down the transition to sustainable energy solutions. Just as Linux democratized and revolutionized the internet by providing a solid, open foundation, this initiative aims to deliver a similar breakthrough for energy management creating a transparent, reliable, and community-driven platform that helps and accelerates adoption and innovation in the global shift to renewable power.
 
-## License Validation
-- License payload: base64 JSON containing owner, key id, expiry, signature (HMAC-SHA256)
-- License is loaded from file (`license.path`) or env var (`R_EMS_LICENSE` by default)
-- Startup aborts if license invalid unless `--dev-allow-license-bypass` or config `allow_bypass`
-- Validation metadata is logged on success and stored in `LicenseValidation`
+---
 
-## Update Workflow
-- Local feed: `configs/update_feed.json`
-- GitHub: owner/repo from config → `octocrab` integration
-- CLI commands:
-  - `r-emsd update-check` → report latest version
-  - `r-emsd update-apply` → (dev only) simulate binary swap
-- Simulation writes artifacts to `target/update-simulated/`
+## 🧩 System Architecture (Sections)
 
-## Runtime Modes
-| Mode        | Description                                      |
-|-------------|--------------------------------------------------|
-| production  | Hardware inputs, minimal logging                 |
-| simulation  | Synthetic or replayed telemetry replaces inputs |
-| hybrid      | Primary hardware with synthetic augmentation     |
+The project is organized into 15 Sections, each with sub-steps and full documentation:
 
-Mode can be set via config (`mode = "simulation"`), CLI flag (`--mode hybrid`), or simulation config override.
+1. **Core Functionality**  
+2. **Messaging & IPC / Data Model**  
+3. **Persistence & Logging**  
+4. **Configuration & Orchestration**  
+5. **Networking & External Interfaces**  
+6. **Security & Access Control**  
+7. **Resilience & Fault Tolerance**  
+8. **Energy Models & Optimization**  
+9. **Integration & Interoperability**  
+10. **Deployment & CI/CD Enhancements**  
+11. **Simulation & Test Harness**  
+12. **GUI & Setup Wizard**  
+13. **Documentation & Contributor Guides**  
+14. **Versioning & Licensing System**  
+15. **Testing, QA & Runbook**
 
-## Logging & Telemetry
-- `tracing` with JSON or pretty formatting
-- Env var `R-EMS_LOG` sets filter (`debug` for developer mode)
-- Log fields: `grid_id`, `controller_id`, `role`, `mode`, `tick`, `jitter_us`, `failover_event`
-- Jitter histograms written to `target/test-logs/<grid>-<controller>-jitter.json`
+See `/docs/FRONTMATTER-GUIDE.md` for the taxonomy of files.
 
-## Testing
-- Unit tests for license validation, redundancy promotion, update detection
-- Orchestrator integration test runs simulator mode with multiple controllers
-- Property/performance test scaffolding provided via `LoopTimingReporter`
+---
 
-Run the suite:
+## 🛠️ Build Instructions
 ```bash
-cargo fmt
-cargo clippy --workspace --all-targets
-cargo test --workspace
+cargo build
+cargo test
 ```
 
-## CI / CD
-- `.github/workflows/ci.yml`: `cargo fmt`, `cargo clippy`, `cargo test`, simulator smoke test
-- `.github/workflows/release.yml`: version tag build, Docker image for Balena, release notes
+---
 
-## Documentation
-- `ARCHITECTURE.md`: system diagrams (control loop, redundancy, simulation)
-- `LICENSES.md`, `UPDATES.md`, `SIMULATION.md`
-- Detailed docs under `docs/`
+## ▶️ Running
 
-## Contributions
-- Branch strategy: `main` (stable), `dev` (integration), feature branches via PR
-- Tests + docs required for PRs
-- Follow coding guidelines in `docs/OPERATIONS.md`
+- **Daemon:**
+    
+    ```bash
+    ./bin/r-emsd
+    ```
+    
+- **Control CLI:**
+    
+    ```bash
+    ./bin/r-emsctl status
+    ```
+    
 
-## Messaging Workspace Scaffold
-This repository now includes the initial scaffolding for the dedicated messaging workspace covering schema, messaging, transport, and replay crates; the code presently exposes placeholder modules only and will be extended in subsequent iterations.
-## Docker Automation
-- Run `./scripts/docker-install.sh` (macOS/Linux) or `powershell -File scripts/docker-install.ps1` (Windows) to build the image and launch the daemon.
-- Override name/image with `R_EMS_CONTAINER`/`R_EMS_IMAGE` env vars.
-- To use Docker Compose: `docker compose -f docker/compose.yml up -d` (creates config/Log/snapshot bind mounts under `target/`).
-- Logs stream via `docker logs -f r-emsd`; config file persisted at `target/docker-config/config.toml` for editing.
+---
+
+## 🎛️ Simulation Mode
+
+- Start any device in simulation mode (e.g., Raspberry Pi with Balena).
+    
+- Generate or replay data into the system.
+    
+- Useful for testing integrations without real hardware.
+    
+
+---
+
+## 🖥️ GUI & Setup Wizard
+
+- Access via web browser after starting R-EMS.
+    
+- Guides you through first-time installation:
+    
+    - Define installation name.
+        
+    - Configure grids and controllers.
+        
+    - Enable simulation or production mode.
+        
+    - Save validated configuration.
+        
+
+---
+
+## 📦 Installer
+
+Install via helper script:
+
+```bash
+./scripts/install.sh
+```
+
+Supports Docker, systemd, and bare-metal deployments.
+
+---
+
+## 🔒 Security & Licensing
+
+- Development use is free and open.
+    
+- Commercial/security features require a valid license.
+    
+- Certificates and PKI integration support full trust chains for national grid and marine class compliance.
+    
+- See `/docs/LICENSING.md`.
+    
+
+---
+
+## 📚 Contributing
+
+Contributions are welcome!
+
+- See `/docs/CONTRIBUTOR.md` for guidelines.
+    
+- Branching and versioning rules are in `/docs/VERSIONING.md`.
+    
+- All files must include proper **frontmatter** for discoverability.
+    
+
+---
+
+## 📜 License
+
+- Free for development and testing.
+    
+- Commercial use requires a separate license.
+    
+- See `/docs/LICENSING.md` for details.
+    
+
+---
+
+```
