@@ -5,7 +5,7 @@ ems_type: "doc"
 ems_scope: "documentation"
 ems_description: "Versioning and licensing governance."
 ems_version: "v0.0.0-prealpha"
-ems_owner: "Ocean Batteries / R-EMS Maintainers"
+ems_owner: "tbd"
 ---
 
 # Section 14 · Versioning & Licensing System

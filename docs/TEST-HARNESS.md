@@ -5,7 +5,7 @@ ems_type: "doc"
 ems_scope: "test-harness"
 ems_description: "Overview of the automated test harness initiatives."
 ems_version: "v0.1.0"
-ems_owner: "Ocean Batteries / R-EMS Maintainers"
+ems_owner: "tbd"
 ---
 
 # Test Harness Orchestrator

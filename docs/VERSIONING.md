@@ -5,7 +5,7 @@ ems_type: "doc"
 ems_scope: "documentation"
 ems_description: "Branching and versioning rules for the pre-alpha programme."
 ems_version: "v0.0.0-prealpha"
-ems_owner: "Ocean Batteries / R-EMS Maintainers"
+ems_owner: "tbd"
 ---
 
 # Versioning & Branch Strategy

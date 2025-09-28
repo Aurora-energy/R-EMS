@@ -5,7 +5,7 @@ ems_type: "doc"
 ems_scope: "documentation"
 ems_description: "Contributor expectations and workflow guidance."
 ems_version: "v0.0.0-prealpha"
-ems_owner: "Ocean Batteries / R-EMS Maintainers"
+ems_owner: "tbd"
 ---
 
 # Contributor Guide
@@ -28,5 +28,5 @@ Thank you for contributing to R-EMS. During the pre-alpha phase we focus on esta
 
 ## Communication
 
-- Join the asynchronous design discussions via the Ocean Batteries engineering forum.
+- Join the asynchronous design discussions via the tbd engineering forum.
 - Release planning occurs fortnightly; ensure feature branches are rebased prior to the planning call.

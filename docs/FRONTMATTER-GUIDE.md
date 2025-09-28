@@ -5,7 +5,7 @@ ems_type: "doc"
 ems_scope: "documentation"
 ems_description: "Guide for applying frontmatter metadata across the repository."
 ems_version: "v0.0.0-prealpha"
-ems_owner: "Ocean Batteries / R-EMS Maintainers"
+ems_owner: "tbd"
 ---
 
 # Frontmatter Guide
@@ -20,7 +20,7 @@ ems_type: "doc"
 ems_scope: "documentation"
 ems_description: "<short description>"
 ems_version: "v0.0.0-prealpha"
-ems_owner: "Ocean Batteries / R-EMS Maintainers"
+ems_owner: "tbd"
 ---
 ```
 
