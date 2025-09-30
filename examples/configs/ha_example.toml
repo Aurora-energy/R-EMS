@@ -1,0 +1,3 @@
+# Placeholder HA configuration example.
+[ha]
+mode = "active-passive"

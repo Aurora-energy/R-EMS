@@ -1,0 +1,33 @@
+# ---------------------------------------------------------------------------
+# Cargo manifest for the R-EMS event bus service.
+#
+# The bus exposes a tonic gRPC API for publish/subscribe messaging alongside an
+# Axum HTTP surface for health checks and Prometheus metrics.
+# ---------------------------------------------------------------------------
+[package]
+name = "r-ems-bus"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+async-trait.workspace = true
+axum.workspace = true
+metrics.workspace = true
+metrics-exporter-prometheus.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tonic.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+# Depend on the generated protobuf types from the schemas crate.
+r-ems-schemas = { path = "../schemas" }
+
+[[bin]]
+name = "r-ems-bus"
+path = "src/main.rs"

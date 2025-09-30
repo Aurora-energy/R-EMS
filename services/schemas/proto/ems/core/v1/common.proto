@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package ems.core.v1;
+
+message Placeholder {} // TODO: replaced in Phase 1

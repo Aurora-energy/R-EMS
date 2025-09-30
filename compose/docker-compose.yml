@@ -1,0 +1,3 @@
+version: "3.9"
+# Root docker-compose file referencing profile overlays defined in compose/profiles.
+services: {}

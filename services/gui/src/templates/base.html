@@ -1,0 +1,46 @@
+{# ------------------------------------------------------------------------- #}
+{# Base layout for the R-EMS GUI.                                            #}
+{# The template defines a responsive navigation layout using semantic HTML.   #}
+{# Child templates extend this base using Askama's `block` mechanism.         #}
+{# ------------------------------------------------------------------------- #}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Metadata describing the document encoding and responsive behaviour. -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}R-EMS Core{% endblock %}</title>
+    <!-- Simple styling to keep the bootstrap minimal yet readable. -->
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 0; background: #101820; color: #f4f4f4; }
+      header { background: #0b2545; padding: 1rem; }
+      nav a { color: #f4f4f4; margin-right: 1rem; text-decoration: none; }
+      nav a[aria-current="page"] { text-decoration: underline; }
+      main { padding: 2rem; }
+      footer { background: #0b2545; padding: 1rem; text-align: center; }
+      .banner { float: right; font-size: 0.85rem; color: #fdd835; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { padding: 0.5rem; border-bottom: 1px solid #1f3c58; text-align: left; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>R-EMS Core</h1>
+      <div class="banner" role="note">Security: stub — hardening forthcoming</div>
+      <nav aria-label="Primary">
+        <a href="/" {% block nav_overview %}{% endblock %}>Overview</a>
+        <a href="/plugins" {% block nav_plugins %}{% endblock %}>Plugins</a>
+        <a href="/config" {% block nav_config %}{% endblock %}>Config</a>
+        <a href="/ha" {% block nav_ha %}{% endblock %}>HA</a>
+        <a href="/help" {% block nav_help %}{% endblock %}>Help</a>
+      </nav>
+    </header>
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+    <footer>
+      <!-- Footer reminds operators where to find documentation volumes. -->
+      <p>Docs mounted at <code>/srv/r-ems/docs</code>. GUI powered by Rust + HTMX.</p>
+    </footer>
+  </body>
+</html>

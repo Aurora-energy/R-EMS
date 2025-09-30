@@ -1,0 +1,95 @@
+system:
+  grids:
+    - id: grid_a
+      name: North Field Microgrid
+      allow_interop: true
+      controllers:
+        - id: grid_a_ctrl_primary
+          role: primary
+          redundancy_group: grid_a_cluster
+          heartbeat_interval_ms: 500
+          failover_timeout_ms: 1500
+          sync_channels:
+            - status_bus
+            - command_queue
+        - id: grid_a_ctrl_backup
+          role: backup
+          redundancy_group: grid_a_cluster
+          heartbeat_interval_ms: 500
+          failover_timeout_ms: 1500
+          sync_channels:
+            - status_bus
+            - command_queue
+      devices:
+        - id: inverter_main
+          bus: can
+          address: "0x12"
+          protocol:
+            dbc_file: dbcs/inverter.dbc
+            notes: Primary inverter CAN profile
+          telemetry:
+            - name: voltage
+              description: Output voltage delivered to the microgrid bus
+              unit: volts
+            - name: frequency
+              description: Output frequency reference
+              unit: hertz
+            - name: fault_code
+              description: Active fault state code
+          commands:
+            - name: set_voltage
+              description: Adjust inverter voltage set-point
+            - name: set_mode
+              description: Change inverter operating mode
+        - id: relay_pump
+          bus: rs485
+          address: "15"
+          protocol:
+            register_map: registers/relay.toml
+            notes: Discrete control registers for pump relay
+          telemetry:
+            - name: state
+              description: Relay state feedback
+            - name: current
+              description: Current draw through the relay
+              unit: ampere
+          commands:
+            - name: open
+              description: Open the pump relay
+            - name: close
+              description: Close the pump relay
+    - id: grid_b
+      name: Wind Farm Loop
+      allow_interop: false
+      controllers:
+        - id: grid_b_ctrl_standalone
+          role: standalone
+          sync_channels:
+            - metrics
+      devices:
+        - id: wind_turbine_a
+          bus: can
+          address: "0x21"
+          protocol:
+            dbc_file: dbcs/wind_turbine.dbc
+          telemetry:
+            - name: rotor_speed
+              unit: rpm
+              description: Turbine rotor speed
+            - name: power_output
+              unit: kw
+              description: Real-time power generation
+          commands:
+            - name: set_pitch
+              description: Adjust blade pitch angle
+            - name: set_generator_mode
+              description: Change generator operating mode
+        - id: ambient_temperature_sensor
+          bus: rs485
+          address: "6"
+          protocol:
+            register_map: registers/environment.toml
+          telemetry:
+            - name: temperature
+              unit: celsius
+              description: Ambient temperature near turbine base
