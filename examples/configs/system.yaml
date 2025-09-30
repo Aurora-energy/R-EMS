@@ -1,0 +1,81 @@
+# Canonical configuration template aligning with the redundancy and
+# communication requirements enforced by configd.
+system:
+  grids:
+    - id: grid_a
+      name: North Field Microgrid
+      allow_interop: true
+      controllers:
+        - id: grid_a_ctrl_primary
+          role: primary
+          redundancy_group: grid_a_cluster
+          heartbeat_interval_ms: 500
+          failover_timeout_ms: 1500
+          sync_channels:
+            - status_bus
+            - command_queue
+        - id: grid_a_ctrl_backup
+          role: backup
+          redundancy_group: grid_a_cluster
+          heartbeat_interval_ms: 500
+          failover_timeout_ms: 1500
+          sync_channels:
+            - status_bus
+            - command_queue
+      devices:
+        - id: inverter_main
+          bus: can
+          address: "0x12"
+          protocol:
+            dbc_file: dbcs/inverter.dbc
+          telemetry:
+            - name: voltage
+              unit: volts
+            - name: frequency
+              unit: hertz
+            - name: fault_code
+          commands:
+            - name: set_voltage
+            - name: set_mode
+        - id: relay_pump
+          bus: rs485
+          address: "15"
+          protocol:
+            register_map: registers/relay.toml
+          telemetry:
+            - name: state
+            - name: current
+              unit: ampere
+          commands:
+            - name: open
+            - name: close
+    - id: grid_b
+      name: Wind Farm Loop
+      allow_interop: false
+      controllers:
+        - id: grid_b_ctrl_standalone
+          role: standalone
+          sync_channels:
+            - metrics
+      devices:
+        - id: wind_turbine_a
+          bus: can
+          address: "0x21"
+          protocol:
+            dbc_file: dbcs/wind_turbine.dbc
+          telemetry:
+            - name: rotor_speed
+              unit: rpm
+            - name: power_output
+              unit: kw
+          commands:
+            - name: set_pitch
+            - name: set_generator_mode
+        - id: ambient_temperature_sensor
+          bus: rs485
+          address: "6"
+          protocol:
+            register_map: registers/environment.toml
+          telemetry:
+            - name: temperature
+              unit: celsius

@@ -1,0 +1,34 @@
+services:
+  supervisor:
+    image: r-ems-supervisor:latest
+    build:
+      context: ../..
+      dockerfile: services/supervisor/Dockerfile
+    ports:
+      - "7100:7100"
+
+  registry:
+    image: r-ems-registry:latest
+    build:
+      context: ../..
+      dockerfile: services/registry/Dockerfile
+    environment:
+      REMS_REGISTRY_BIND: 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+
+  gui:
+    image: r-ems-gui:latest
+    build:
+      context: ../..
+      dockerfile: services/gui/Dockerfile
+    depends_on:
+      - supervisor
+      - registry
+    environment:
+      REMS_GUI_HEALTH_ENDPOINTS: http://supervisor:7100/healthz,http://registry:8000/healthz
+      REMS_GUI_DOCS_ROOT: /srv/r-ems/docs
+    volumes:
+      - ../../docs:/srv/r-ems/docs:ro
+    ports:
+      - "8080:8080"

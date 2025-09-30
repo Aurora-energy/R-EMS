@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Help · {{ title }}{% endblock %}
+{% block nav_help %}aria-current="page"{% endblock %}
+{% block content %}
+  <h2>{{ title }}</h2>
+  <!-- Rendered Markdown body trusted because we sanitise file paths and only allow local docs. -->
+  <article class="help-body">{{ body_placeholder }}</article>
+  <p><a href="/help">Back to index</a></p>
+{% endblock %}

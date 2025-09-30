@@ -1,0 +1,42 @@
+# ---------------------------------------------------------------------------
+# Cargo manifest for the GUI service.
+#
+# The GUI is implemented as an Axum HTTP server rendering server-side HTML via
+# Askama templates with HTMX for progressive enhancement. This crate produces
+# a single binary named `r-ems-gui`.
+# ---------------------------------------------------------------------------
+[package]
+name = "r-ems-gui"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+# ---------------------------------------------------------------------------
+# Dependencies
+# ---------------------------------------------------------------------------
+[dependencies]
+anyhow.workspace = true            # Ergonomic error context for fallible ops.
+askama.workspace = true            # Server-side HTML templates compiled at build.
+askama_axum.workspace = true       # Integration helpers for Axum responses.
+axum.workspace = true              # HTTP server + routing.
+axum-extra.workspace = true        # Additional extractors/headers if required.
+config.workspace = true            # Structured configuration loader.
+pulldown-cmark.workspace = true    # Render Markdown help docs to HTML.
+reqwest.workspace = true           # HTTP client used to talk to sibling services.
+serde.workspace = true             # Serialize/deserialize JSON payloads.
+serde_json.workspace = true        # Parse structured responses from services.
+thiserror.workspace = true         # Ergonomic error definition via `derive` macros.
+tokio.workspace = true             # Async runtime powering the Axum server.
+tower.workspace = true             # Middleware abstractions used by Axum.
+tower-http.workspace = true        # Common middleware (compression, trace, etc.).
+tracing.workspace = true           # Structured logging (emits spans/events).
+tracing-subscriber.workspace = true
+urlencoding = "2"                  # Encode/decode HTMX query parameters safely.
+
+[dev-dependencies]
+axum = { workspace = true, features = ["macros"] } # Provide test-friendly macros.
+
+[[bin]]
+name = "r-ems-gui"
+path = "src/main.rs"

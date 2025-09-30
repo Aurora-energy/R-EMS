@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Overview · R-EMS Core{% endblock %}
+{% block nav_overview %}aria-current="page"{% endblock %}
+{% block content %}
+  <h2>Core Service Health</h2>
+  <!-- HTMX snippet periodically refreshes the table by calling /api/overview. -->
+  <div hx-get="/api/overview" hx-trigger="every 10s" hx-target="#health-table" hx-swap="outerHTML">
+    <table id="health-table" role="grid" aria-label="Service health status">
+      <thead>
+        <tr>
+          <th scope="col">Service</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for service in services %}
+        <tr>
+          <td>{{ service.name }}</td>
+          <td>{{ service.status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
